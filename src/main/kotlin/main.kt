@@ -14,7 +14,6 @@ fun main() {
     }
 
     val admin1Codes = mutableMapOf<String, String>()
-
     File("admin1CodesASCII.txt").forEachLine {
         val strings = it.split('\t')
         admin1Codes[strings[0]] = strings[1]
@@ -80,19 +79,7 @@ fun main() {
         }
     }
 
-/*
-    println(citiesMap.size)
-    println(citiesMap["CA.Concord"])
-    println(citiesMap["US.Springfield"])
-    println(citiesMap["CA.Vernon"])
-    println(citiesMap["RU.Vidyayevo"])
-    println(citiesMap["CO.Buenaventura"])
-*/
-
     File("geoCities.json").writeText(Json.encodeToString(citiesMap))
-
-    //println(Json.encodeToString(citiesMap))
-
 }
 
 /*
