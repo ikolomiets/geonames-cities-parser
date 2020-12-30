@@ -11,10 +11,12 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation("com.electrit:protokol:1.0.1")
 }
 
 tasks.withType<KotlinCompile> {

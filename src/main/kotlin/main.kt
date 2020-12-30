@@ -1,4 +1,4 @@
-
+import com.electrit.protokol.ByteArrayProtokolCodec
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.io.File
@@ -38,48 +38,43 @@ fun main() {
         cityGeonames.getOrPut(key, { mutableListOf() }).add(geonameId)
     }
 
+    val geoCities = mutableListOf<GeoCity>()
+
     cityGeonames.forEach {
-        if (it.value.size > 1) {
-            val latLon = mutableListOf<String>()
-            val admin1Suffixes = mutableListOf<String>()
-            val admin2Suffixes = mutableListOf<String>()
-            for (geonameId in it.value) {
-                val details = getGeoDetails(geonameId)
+        val locations = mutableListOf<GeoLocation>()
+        for (geonameId in it.value) {
+            val details = getGeoDetails(geonameId)
 
-                val lat = details[4]
-                val lon = details[5]
-                latLon.add("$lat:$lon")
-
-                val cc = details[8]
-                val admin1 = details[10]
-                val admin2 = details[11]
-
-                val admin1Text = admin1Codes.getOrDefault("$cc.$admin1", admin1)
-                admin1Suffixes.add(admin1Text)
-
-                val admin2Text = admin2Codes.getOrDefault("$cc.$admin1.$admin2", admin2)
-                admin2Suffixes.add("$admin1Text:$admin2Text")
-            }
-
-            val distinctAdmin1 = admin1Suffixes.distinct().size
-            val suffixes = when {
-                distinctAdmin1 < admin2Suffixes.distinct().size -> admin2Suffixes
-                distinctAdmin1 == 1 -> admin1Suffixes.map { "" }
-                else -> admin1Suffixes
-            }
-
-            citiesMap[it.key] = latLon.zip(suffixes).joinToString(",") { pair ->
-                pair.first + (if (pair.second.isNotEmpty()) ":" + pair.second else "")
-            }
-        } else {
-            val details = getGeoDetails(it.value[0])
             val lat = details[4]
             val lon = details[5]
-            citiesMap[it.key] = "$lat:$lon"
+
+            val cc = details[8]
+            val admin1 = details[10]
+            val admin1Text = admin1Codes.getOrDefault("$cc.$admin1", admin1)
+
+            val admin2 = details[11]
+            val admin2Text = admin2Codes.getOrDefault("$cc.$admin1.$admin2", admin2)
+
+            val location = createLocation(lat, lon)
+            location.admin1 = admin1Text
+            location.admin2 = admin2Text
+            location.population = details[14].toInt()
+
+            locations.add(location)
         }
+
+        locations.sortByDescending { location -> location.population }
+
+        if (it.key == "US.Springfield") {
+            println(locations.joinToString("\n"))
+        }
+
+        citiesMap[it.key] = locations.joinToString(",") { l -> "${l.latitude}:${l.longitude}:${l.admin1}:${l.admin2}" }
+        geoCities.add(GeoCity(it.key, locations))
     }
 
     File("geoCities.json").writeText(Json.encodeToString(citiesMap))
+    File("geonames.protokol").writeBytes(ByteArrayProtokolCodec.encode(Geonames(geoCities), GeonamesProtokolObject))
 }
 
 /*
