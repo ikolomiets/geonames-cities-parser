@@ -55,7 +55,7 @@ fun main() {
             val admin2 = details[11]
             val admin2Text = admin2Codes.getOrDefault("$cc.$admin1.$admin2", admin2)
 
-            val location = createLocation(lat, lon)
+            val location = GeoLocation(lat.toFloat(), lon.toFloat())
             location.admin1 = admin1Text
             location.admin2 = admin2Text
             location.population = details[14].toInt()

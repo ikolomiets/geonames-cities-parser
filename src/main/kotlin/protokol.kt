@@ -7,29 +7,12 @@ import java.io.File
 import kotlin.system.measureTimeMillis
 
 data class GeoLocation(
-    var latitudeBits: Int = 0,
-    var longitudeBits: Int = 0,
+    var latitude: Float = 0f,
+    var longitude: Float = 0f,
     var population: Int = 0,
     var admin1: String = "",
     var admin2: String = ""
-) {
-    var latitude
-        get() = Float.fromBits(latitudeBits)
-        set(latitude) {
-            latitudeBits = latitude.toBits()
-        }
-
-    var longitude
-        get() = Float.fromBits(longitudeBits)
-        set(longitude) {
-            longitudeBits = longitude.toBits()
-        }
-
-    override fun toString(): String {
-        return "GeoLocation(latitudeBits=$latitudeBits, longitudeBits=$longitudeBits, admin1='$admin1', admin2='$admin2', latitude=$latitude, longitude=$longitude, population=$population)"
-    }
-
-}
+)
 
 data class GeoCity(
     var countryCity: String = "",
@@ -45,8 +28,8 @@ object GeoLocationProtokolObject : ProtokolObject<GeoLocation> {
 
     override fun use(value: GeoLocation, p: Protokol) = with(p) {
         with(value) {
-            INT(::latitudeBits)
-            INT(::longitudeBits)
+            FLOAT(::latitude)
+            FLOAT(::longitude)
             STRING(::admin1)
             STRING(::admin2)
         }
@@ -72,13 +55,6 @@ object GeonamesProtokolObject : ProtokolObject<Geonames> {
             OBJECTS(::geoCities, GeoCityProtokolObject)
         }
     }
-}
-
-fun createLocation(lat: String, lon: String): GeoLocation {
-    val location = GeoLocation()
-    location.latitude = lat.toFloat()
-    location.longitude = lon.toFloat()
-    return location
 }
 
 fun main() {

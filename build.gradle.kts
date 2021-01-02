@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
-    implementation("com.electrit:protokol:1.0.1")
+    implementation("com.electrit:protokol:1.1.0")
 }
 
 tasks.withType<KotlinCompile> {
