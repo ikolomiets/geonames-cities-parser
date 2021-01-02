@@ -62,10 +62,6 @@ fun main() {
 
         locations.sortByDescending { location -> location.population }
 
-        if (it.key == "US.Springfield") {
-            println(locations.joinToString("\n"))
-        }
-
         citiesMap[it.key] = locations.joinToString(",") { l -> "${l.latitude}:${l.longitude}:${l.admin1}:${l.admin2}" }
         geoCities.add(GeoCity(it.key, locations))
     }
