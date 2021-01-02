@@ -55,12 +55,9 @@ fun main() {
             val admin2 = details[11]
             val admin2Text = admin2Codes.getOrDefault("$cc.$admin1.$admin2", admin2)
 
-            val location = GeoLocation(lat.toFloat(), lon.toFloat())
-            location.admin1 = admin1Text
-            location.admin2 = admin2Text
-            location.population = details[14].toInt()
+            val population = details[14].toInt()
 
-            locations.add(location)
+            locations.add(GeoLocation(lat.toFloat(), lon.toFloat(), population, admin1Text, admin2Text))
         }
 
         locations.sortByDescending { location -> location.population }
