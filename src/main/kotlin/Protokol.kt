@@ -2,7 +2,7 @@ import com.electrit.protokol.Protokol
 import com.electrit.protokol.ProtokolMapEntry
 import com.electrit.protokol.ProtokolObject
 
-class GeoLocation(
+data class GeoLocation(
     var latitude: Float = 0f,
     var longitude: Float = 0f,
     var population: Int = 0,
