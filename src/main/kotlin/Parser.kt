@@ -7,6 +7,7 @@ fun main() {
     val geonameDetails = mutableMapOf<Int, String>()
     val cityGeonames = mutableMapOf<String, MutableList<Int>>()
     val citiesMap = mutableMapOf<String, String>()
+    val geoCities = mutableMapOf<String, List<GeoLocation>>()
 
     fun getGeoDetails(geonameId: Int): List<String> {
         val details = geonameDetails[geonameId]
@@ -37,8 +38,6 @@ fun main() {
 
         cityGeonames.getOrPut(key, { mutableListOf() }).add(geonameId)
     }
-
-    val geoCities = mutableMapOf<String, List<GeoLocation>>()
 
     cityGeonames.forEach {
         val locations = mutableListOf<GeoLocation>()
