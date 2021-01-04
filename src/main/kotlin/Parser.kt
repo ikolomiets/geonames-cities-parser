@@ -38,7 +38,7 @@ fun main() {
         cityGeonames.getOrPut(key, { mutableListOf() }).add(geonameId)
     }
 
-    val geoCities = mutableListOf<GeoCity>()
+    val geoCities = mutableMapOf<String, List<GeoLocation>>()
 
     cityGeonames.forEach {
         val locations = mutableListOf<GeoLocation>()
@@ -63,11 +63,11 @@ fun main() {
         locations.sortByDescending { location -> location.population }
 
         citiesMap[it.key] = locations.joinToString(",") { l -> "${l.latitude}:${l.longitude}:${l.admin1}:${l.admin2}" }
-        geoCities.add(GeoCity(it.key, locations))
+        geoCities[it.key] = locations
     }
 
     File("geoCities.json").writeText(Json.encodeToString(citiesMap))
-    File("geonames.protokol").writeBytes(ByteArrayProtokolCodec.encode(Geonames(geoCities), GeonamesProtokolObject))
+    File("geoCities.protokol").writeBytes(ByteArrayProtokolCodec.encodeMap(geoCities, GeoCitesProtokolObject))
 }
 
 /*
