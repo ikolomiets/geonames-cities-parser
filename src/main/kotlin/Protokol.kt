@@ -17,8 +17,8 @@ class GeoLocation(
 object GeoLocationProtokolObject : ProtokolObject<GeoLocation> {
     override fun create() = GeoLocation()
 
-    override fun use(value: GeoLocation, p: Protokol) = with(p) {
-        with(value) {
+    override val protokol: Protokol.(GeoLocation) -> Unit = {
+        with(it) {
             FLOAT(::latitude)
             FLOAT(::longitude)
             STRING(::admin1)
@@ -30,8 +30,8 @@ object GeoLocationProtokolObject : ProtokolObject<GeoLocation> {
 object GeoCitesProtokolObject : ProtokolObject<ProtokolMapEntry<String, List<GeoLocation>>> {
     override fun create() = ProtokolMapEntry<String, List<GeoLocation>>("", emptyList())
 
-    override fun use(value: ProtokolMapEntry<String, List<GeoLocation>>, p: Protokol) = with(p) {
-        with(value) {
+    override val protokol: Protokol.(ProtokolMapEntry<String, List<GeoLocation>>) -> Unit = {
+        with(it) {
             STRING(::key)
             OBJECTS(::value, GeoLocationProtokolObject)
         }
