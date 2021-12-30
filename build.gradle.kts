@@ -9,11 +9,12 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
-    implementation("com.electrit:protokol:2.0.0")
+    implementation("com.electrit:protokol:2.1.0-SNAPSHOT")
 }
 
 application {
