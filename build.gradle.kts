@@ -17,6 +17,7 @@ dependencies {
     implementation("com.electrit:protokol:2.1.0-SNAPSHOT")
 }
 
+#
 application {
     mainClass.set("ParserKt")
 }
